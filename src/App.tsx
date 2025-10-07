@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { ShoppingCart, MapPin, Calendar } from 'lucide-react';
+
+import { useNavigate } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar.tsx';
 
@@ -15,6 +17,11 @@ interface Destinations {
 }
 
 export default function TravelDestinations() {
+  const navigate = useNavigate();
+  const goToLooks = () => {
+    navigate('/looks');
+  }
+
   const [destination, setDestination] = useState('All');
   const [season, setSeason] = useState('Summer');
   const [cart, setCart] = useState<DestinationItem[]>([]);
@@ -82,15 +89,7 @@ export default function TravelDestinations() {
     ]
   };
 
-  const addToCart = (item: DestinationItem) => {
-    if (!cart.find(cartItem => cartItem.id === item.id)) {
-      setCart([...cart, item]);
-    }
-  };
 
-  const removeFromCart = (id: number) => {
-    setCart(cart.filter(item => item.id !== id));
-  };
 
   return (
     <div className="app-container">
@@ -111,7 +110,7 @@ export default function TravelDestinations() {
             
             <div className="cards-container">
               {items.map((item) => (
-                <div key={item.id} className="card">
+                <div key={item.id} className="card" onClick={goToLooks}>
                   {/* Image */}
                   <div className="card-image">
                     <img 
@@ -119,30 +118,6 @@ export default function TravelDestinations() {
                       alt={item.name}
                     />
                   </div>
-
-                  {/* Content */}
-                  {/* <div className="card-content">
-                    <div>
-                      <h3 className="card-title">{item.name}</h3>
-                      <p className="card-price">{item.price}</p>
-                    </div>
-                    
-                    {cart.find(cartItem => cartItem.id === item.id) ? (
-                      <button 
-                        onClick={() => removeFromCart(item.id)}
-                        className="card-button remove-button"
-                      >
-                        Remove
-                      </button>
-                    ) : (
-                      <button 
-                        onClick={() => addToCart(item)}
-                        className="card-button add-button"
-                      >
-                        Add to Cart
-                      </button>
-                    )}
-                  </div> */}
                 </div>
               ))}
             </div>
